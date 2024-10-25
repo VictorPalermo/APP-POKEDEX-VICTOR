@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Escolha de Nome</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <img id="character-img" src="" alt="Personagem" />
+        <div id="text-box">
+            <p id="game-text"></p> 
+            <input type="text" id="player-name" placeholder="Digite seu nome aqui">
+            <button onclick="submitName()">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        function getParameterByName(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        const gender = getParameterByName('gender');
+        const characterImg = document.getElementById('character-img');
+
+        if (gender === 'garoto') {
+            characterImg.src = '/images/garoto.png'; 
+        } else {
+            characterImg.src = '/images/garota.png'; 
+        }
+
+        function typeText(text, element, delay) {
+            let index = 0;
+            element.innerText = ''; 
+
+            function addNextCharacter() {
+                if (index < text.length) {
+                    element.innerText += text.charAt(index);
+                    index++;
+                    setTimeout(addNextCharacter, delay);
+                }
+            }
+            addNextCharacter(); 
+        }
+
+        window.onload = () => {
+            typeText("Gostariaﾠdeﾠsaberﾠseuﾠnomeﾠagora.", document.getElementById('game-text'), 50); 
+        };
+
+        function submitName() {
+            const playerName = document.getElementById('player-name').value;
+            if (playerName) {
+                const gameText = document.getElementById('game-text');
+                gameText.innerText = ''; 
+
+                typeText(`Umﾠmundoﾠdeﾠsonhosﾠeﾠaventurasﾠlheﾠaguardaﾠ${playerName},ﾠVamosﾠlá!ﾠRedirecionandoﾠparaﾠaﾠPokédex...............`, gameText, 50);
+
+                
+                setTimeout(() => {
+                    window.location.href = '/pokemon'; 
+                }, 7000); 
+            } else {
+                alert("Por favor, digite um nome!"); 
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh; 
+    background: linear-gradient(to bottom, #ffffff 0%, #a1d8e5 100%); 
+}
+
+#game-container {
+    text-align: center;
+    margin-top: 50px;
+    position: relative; 
+    z-index: 1; 
+}
+
+#professor-img {
+    width: 200px; 
+}
+
+#character-img {
+    width: 190px; 
+}
+
+#text-box {
+    background-color: rgba(255, 255, 255, 0.9); 
+    border: 2px solid #000;
+    padding: 10px;
+    width: 500px;
+    margin: 20px auto;
+    cursor: pointer;
+}
+
+#game-text {
+    font-size: 18px;
+    color: #000;
+}
+
+#choice-buttons {
+    margin-top: 20px; 
+}
+
+button {
+    background-color: #6b8e23; 
+    color: #ffffff; 
+    border: 2px solid #000000; 
+    padding: 10px 20px; 
+    text-align: center; 
+    font-size: 16px; 
+    margin: 5px; 
+    cursor: pointer; 
+    border-radius: 5px; 
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
+    transition: background-color 0.3s, transform 0.1s; 
+}
+
+button:hover {
+    background-color: #556b2f; 
+    transform: translateY(-2px); 
+}
+
+button:active {
+    transform: translateY(1px); /
+}
