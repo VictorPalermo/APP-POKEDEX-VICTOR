@@ -2,7 +2,7 @@ const pokemonModel = require('../models/pokemonModel');
 
 const getAllPokemons = (req, res) => {
     const pokemons = pokemonModel.getPokemons();
-    res.render('index', { pokemons });  // Corrigir para 'pokemons'
+    res.render('index', { pokemons });
 };
 
 const getPokemon = (req, res) => {
@@ -14,6 +14,19 @@ const getPokemon = (req, res) => {
     }
 };
 
-module.exports = {
-    getAllPokemons, getPokemon
+
+const createPokemon = (req, res) => {
+    const { nome, tipo1, tipo2, generop, peso, altura, level } = req.body;
+    const novoPokemon = pokemonModel.createPokemon({
+        nome,
+        tipo1,
+        tipo2,
+        genero: generop,
+        peso,
+        altura,
+        level
+    });
+    res.redirect('/');
 };
+
+module.exports = { getAllPokemons, getPokemon, createPokemon };

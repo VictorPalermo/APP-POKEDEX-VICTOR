@@ -2,27 +2,13 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Crie seu Treinador</title>
+    <title>Treinador Criado</title>
 </head>
 <body>
-    <h1>Treinador</h1>
-    <ul>
-        <% treinadores.forEach(function(treinador) { %>
-            <li>
-                <a href="/treinador/<%= treinador.id %>"><%= treinador.nome %></a> - <%= treinador.tipo %>
-            </li>
-        <% }); %>
-    </ul>
-
-    <h2>Criar novo Trinador</h2>
-    <form action="/treinador" method="POST">
-        <label for="nome">Nome do Treinador:</label>
-        <input type="text" id="nome" name="nome" required>
-
-        <label for="tipo">Tipo do Treinador:</label>
-        <input type="text" id="tipo" name="tipo" required>
-
-        <button type="submit">Criar Treinador</button>
-    </form>
-
+    <h1>Treinador Criado</h1>
+    <p>Bem-vindo, <%= treinador.nome %>! Você pode agora explorar a Pokédex!</p>
+    <a href="/pokedex">Ir para a Pokédex</a>
+    <br>
+    <button onclick="window.location.href='/'">Criar outro Treinador</button> <!-- Botão para voltar à página inicial -->
 </body>
+</html>
