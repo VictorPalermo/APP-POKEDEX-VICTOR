@@ -1,7 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const treinadorController = require('../controllers/treinadorController');
+const { criarTreinador, listarTreinadores } = require('../controllers/treinadorController');
 
-router.post('/treinador', treinadorController.createTreinador);
+// Rota para criar um novo treinador
+router.post('/treinador', criarTreinador);
+
+// Rota para listar todos os treinadores
+router.get('/treinadores', listarTreinadores);
+
 
 module.exports = router;

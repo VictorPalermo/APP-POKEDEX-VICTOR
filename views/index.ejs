@@ -2,182 +2,175 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Pokédex</title>
+    <title>Pokémon Unifil Edition</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/script.js" defer></script>
+    <style>
+        /* Estilo para o container */
+        #game-container {
+            text-align: center; /* Centraliza o conteúdo */
+            margin-top: 20px; /* Espaçamento acima do container */
+        }
+
+        #character-img {
+            display: none; /* Inicialmente escondido */
+            max-width: 80%; /* Limita o tamanho máximo da imagem */
+            height: auto; /* Mantém a proporção da imagem */
+            margin: 0 auto; /* Centraliza a imagem horizontalmente */
+            margin-bottom: 10px; /* Espaçamento abaixo da imagem do personagem */
+        }
+
+        #name-input {
+            display: none; /* Inicialmente escondido */
+            margin-top: 20px; /* Espaçamento acima do campo de nome */
+        }
+
+        /* Mantém a imagem do professor acima do texto */
+        #professor-img {
+            max-width: 80%; /* Limita o tamanho máximo da imagem */
+            height: auto; /* Mantém a proporção da imagem */
+        }
+    </style>
 </head>
 <body>
-    <div class="pokedex-container">
-        <div class="pokedex-screen">
-    <h1>Pokédex</h1>
-    <ul class="pokemon-list">
-        <% pokemons.forEach(function(pokemon) { %>
-            <li>
-                <a href="/pokemon/<%= pokemon.id %>"><%= pokemon.nome %></a> - <%= pokemon.tipo %>
-            </li>
-        <% }); %>
-    </ul>
-</div>
-<div class="pokedex-form">
-    <h2>Criar novo Pokémon</h2>
-    <form action="/pokemon" method="POST" enctype="multipart/form-data">
-        <label for="nome">Nome do Pokémon:</label>
-        <input type="text" id="nome" name="nome" required>
+    <div id="game-container">
+        <img id="professor-img" src="/images/professor_carvalho.png" alt="Professor Carvalho" />
+        <img id="character-img" src="" alt="Personagem" />
+        <div id="text-box" onclick="nextText()">
+            <p id="game-text"></p>
+            <div id="genero" style="display: none;">
+                <button type="button" onclick="chooseCharacter('garoto')">Garoto</button>
+                <button type="button" onclick="chooseCharacter('garota')">Garota</button>                
+            </div>
+            <div id="name-input">
+                <input type="text" id="player-name" placeholder="Digite seu nome aqui" />
+                <button onclick="submitName()">Enviar</button>
+            </div>
+        </div>
+    </div>
 
-        <label for="tipo1">Tipo 1 do Pokémon:</label>
-        <select id="tipo1" name="tipo1" required>
-            <option value="Normal">Normal</option>
-            <option value="Fogo">Fogo</option>
-            <option value="Água">Água</option>
-            <option value="Elétrico">Elétrico</option>
-            <option value="Grama">Grama</option>
-            <option value="Gelo">Gelo</option>
-            <option value="Lutador">Lutador</option>
-            <option value="Venenoso">Venenoso</option>
-            <option value="Terrestre">Terrestre</option>
-            <option value="Voador">Voador</option>
-            <option value="Psíquico">Psíquico</option>
-            <option value="Inseto">Inseto</option>
-            <option value="Pedra">Pedra</option>
-            <option value="Fantasma">Fantasma</option>
-            <option value="Dragão">Dragão</option>
-            <option value="Sombrio">Sombrio</option>
-            <option value="Aço">Aço</option>
-            <option value="Fada">Fada</option>
-        </select>
+    <script>
+        let texts = [
+            "Olá!ﾠPrazerﾠemﾠconhecê-lo!",
+            "Bem-vindoﾠaoﾠmundoﾠPokémon!",
+            "MeuﾠnomeﾠéﾠCarvalho,ﾠmasﾠtodoﾠmundoﾠmeﾠchamaﾠdeﾠProfessorﾠPokémon.",
+            "EsteﾠmundoﾠéﾠhabitadoﾠporﾠcriaturasﾠchamadasﾠPokémon!",
+            "Paraﾠalgumasﾠpessoas,ﾠosﾠPokémonﾠsãoﾠanimaisﾠdeﾠestimação.",
+            "Outrosﾠosﾠusamﾠparaﾠbatalhas.ﾠQuantoﾠaﾠmim...",
+            "EuﾠestudoﾠosﾠPokémon!",
+            "Masﾠprimeiroﾠfala-meﾠsobreﾠvocê.",
+            "Agoraﾠdiga-me.ﾠVocêﾠéﾠumﾠGaroto?ﾠOuﾠGarota?",
+        ];
 
-        <label for="tipo2">Tipo 2 do Pokémon (opcional):</label>
-        <select id="tipo2" name="tipo2">
-            <option value="">Nenhum</option>
-            <option value="Normal">Normal</option>
-            <option value="Fogo">Fogo</option>
-            <option value="Água">Água</option>
-            <option value="Elétrico">Elétrico</option>
-            <option value="Grama">Grama</option>
-            <option value="Gelo">Gelo</option>
-            <option value="Lutador">Lutador</option>
-            <option value="Venenoso">Venenoso</option>
-            <option value="Terrestre">Terrestre</option>
-            <option value="Voador">Voador</option>
-            <option value="Psíquico">Psíquico</option>
-            <option value="Inseto">Inseto</option>
-            <option value="Pedra">Pedra</option>
-            <option value="Fantasma">Fantasma</option>
-            <option value="Dragão">Dragão</option>
-            <option value="Sombrio">Sombrio</option>
-            <option value="Aço">Aço</option>
-            <option value="Fada">Fada</option>
-        </select>
+        let currentIndex = 0;
+        let gender; // Variável para armazenar o gênero
 
-        <label for="generop">Gênero:</label>
-        <select id="generop" name="generop" required>
-            <option value="Nenhum">Nenhum</option>
-            <option value="Macho">Macho</option>
-            <option value="Fêmea">Fêmea</option>
-        </select>
+        function nextText() {
+            if (currentIndex < texts.length) {
+                typeText(texts[currentIndex]); 
+                currentIndex++;
+            }
 
-        <label for="peso">Peso em quilo:</label>
-        <input type="text" id="peso" name="peso" required>
+            if (currentIndex === texts.length) {
+                document.getElementById("genero").style.display = 'block'; // Mostra opções de gênero
+            }
+        }
 
-        <label for="altura">Altura em centímetros:</label>
-        <input type="text" id="altura" name="altura" required>
+        function typeText(message) {
+            const gameText = document.getElementById("game-text");
+            gameText.innerText = '';
+            let index = 0;
 
-        <label for="level">Level:</label>
-        <input type="number" id="level" name="level" min="1" max="100" required>
-        
+            function typeLetter() {
+                if (index < message.length) {
+                    gameText.innerText += message.charAt(index); 
+                    index++;
+                    setTimeout(typeLetter, 50); 
+                }
+            }
 
-        <label for="imagem">Imagem do Pokémon:</label>
-        <input type="file" id="imagem" name="imagem" accept="image/*" required>
+            typeLetter(); 
+        }
 
-        <button type="submit">Criar Pokémon</button>
-    </form>
-</div>
-</div>
+        function chooseCharacter(selectedGender) {
+            gender = selectedGender; // Armazena o gênero selecionado
+            let genderText = (gender === 'garoto') ? "EntãoﾠvocêﾠéﾠumﾠGaroto!" : "EntãoﾠvocêﾠéﾠumaﾠGarota!";
+            typeText(genderText);
+            
+            // Aguarda 2 segundos para ocultar os botões
+            setTimeout(() => {
+                document.getElementById("genero").style.display = 'none'; // Esconde os botões de escolha de gênero
+
+                // Define a imagem do personagem com base no gênero
+                const characterImg = document.getElementById('character-img');
+                characterImg.src = (gender === 'garoto') ? '/images/garoto.png' : '/images/garota.png'; 
+                characterImg.style.display = 'block'; // Mostra a imagem do personagem
+                characterImg.style.margin = '0 auto'; // Centraliza a imagem
+
+                // Esconde a imagem do professor
+                document.getElementById("professor-img").style.display = 'none';
+
+                // Pergunta o nome do jogador
+                typeText("Gostariaﾠdeﾠsaberﾠseuﾠnomeﾠagora.");
+                document.getElementById("name-input").style.display = 'block'; // Exibe o campo para nome
+
+                // A partir desse momento, vamos desativar a função de clique na caixa de texto
+                document.getElementById("text-box").onclick = null; // Remove o evento de clique
+            }, 2000); 
+        }
+        fetch('/api/treinadores')
+    .then(response => response.json())
+    .then(data => {
+        console.log("Lista de treinadores:", data); // Veja os treinadores no console
+    })
+    .catch(error => {
+        console.error("Erro ao buscar treinadores:", error);
+    });
+
+        function submitName() {
+    const playerName = document.getElementById("player-name").value;
+    if (playerName) {
+        sessionStorage.setItem('nome', playerName);
+        sessionStorage.setItem('genero', gender);
+
+        // Enviar dados do treinador para o servidor
+        fetch('/api/treinador', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                nome: playerName,
+                genero: gender,
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao criar treinador');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Exibir mensagem de sucesso e redirecionar
+            console.log(data.message);
+            const gameText = document.getElementById('game-text');
+            const message = `SuaﾠprópriaﾠlendaﾠPokémonﾠestáﾠprestesﾠaﾠcomeçar!ﾠUmﾠmundoﾠdeﾠsonhosﾠeﾠaventurasﾠlheﾠaguardaﾠ${playerName}.ﾠVamosﾠlá!`;
+            typeText(message);
+
+            setTimeout(() => {
+                window.location.href = '/pokedex';
+            }, 9000);
+        })
+        .catch(error => {
+            alert(error.message);
+        });
+    } else {
+        alert("Por favor, digite um nome!");
+    }
+}
+
+
+        window.onload = nextText;
+    </script>
 </body>
-
-
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-
-.pokedex-container {
-    display: flex;
-    flex-direction: row;
-    background-color: #D32F2F;
-    border: 5px solid #333;
-    border-radius: 10px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 600px;
-    padding: 10px;
-    color: #fff;
-}
-
-.pokedex-screen,
-.pokedex-form {
-    width: 48%; 
-    background-color: #4fccfd;
-    color: #333;
-    padding: 16px; 
-    margin-right: 5px;
-    border-radius: 10px;
-    box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.2);
-}
-
-.pokemon-list {
-    list-style-type: none;
-    padding: 0;
-    color: #333;
-    font-size: 0.9em;
-}
-
-.pokemon-list li {
-    padding: 3px 0;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-top: 8px;
-    font-size: 0.9em; 
-    font-weight: bold;
-}
-
-input[type="text"],
-input[type="number"],
-select,
-input[type="file"] {
-    padding: 6px; 
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 0.9em;
-    width: 100%;
-}
-
-button {
-    margin-top: 15px;
-    padding: 8px;
-    background-color: #388E3C;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 0.9em;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #2E7D32;
-}
-
-
-</style>
 </html>
