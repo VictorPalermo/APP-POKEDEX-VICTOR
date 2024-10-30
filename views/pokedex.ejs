@@ -8,11 +8,15 @@
     <div class="pokedex-container">
         <div class="pokedex-screen">
             <h1> Pokédex de <%= pokedex.treinadorNome %></h1>
-
+            <ul class="pokemon-list">
+                <% pokedex.pokemons.forEach(pokemon => { %>
+                    <li><%= pokemon.nome %> - Tipo: <%= pokemon.tipo1 %>, <%= pokemon.tipo2 %></li>
+                <% }); %>
+            </ul>
 </div>
 <div class="pokedex-form">
     <h2>Criar novo Pokémon</h2>
-    <form action="/pokemon" method="POST" enctype="multipart/form-data">
+    <form action="/pokedex/<%= pokedex.treinadorNome %>" method="POST">
         <label for="nome">Nome do Pokémon:</label>
         <input type="text" id="nome" name="nome" required>
 
@@ -77,9 +81,6 @@
         <label for="level">Level:</label>
         <input type="number" id="level" name="level" min="1" max="100" required>
         
-
-        <label for="imagem">Imagem do Pokémon:</label>
-        <input type="file" id="imagem" name="imagem" accept="image/*" required>
 
         <button type="submit">Criar Pokémon</button>
     </form>

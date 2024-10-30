@@ -6,29 +6,27 @@
     <link rel="stylesheet" href="/css/style.css">
     <script src="/js/script.js" defer></script>
     <style>
-        /* Estilo para o container */
         #game-container {
-            text-align: center; /* Centraliza o conteúdo */
-            margin-top: 20px; /* Espaçamento acima do container */
+            text-align: center; 
+            margin-top: 20px; 
         }
 
         #character-img {
-            display: none; /* Inicialmente escondido */
-            max-width: 80%; /* Limita o tamanho máximo da imagem */
-            height: auto; /* Mantém a proporção da imagem */
-            margin: 0 auto; /* Centraliza a imagem horizontalmente */
-            margin-bottom: 10px; /* Espaçamento abaixo da imagem do personagem */
+            display: none;
+            max-width: 80%; 
+            height: auto; 
+            margin: 0 auto; 
+            margin-bottom: 10px; 
         }
 
         #name-input {
-            display: none; /* Inicialmente escondido */
-            margin-top: 20px; /* Espaçamento acima do campo de nome */
+            display: none; 
+            margin-top: 20px; 
         }
 
-        /* Mantém a imagem do professor acima do texto */
         #professor-img {
-            max-width: 80%; /* Limita o tamanho máximo da imagem */
-            height: auto; /* Mantém a proporção da imagem */
+            max-width: 80%; 
+            height: auto; 
         }
     </style>
 </head>
@@ -148,7 +146,7 @@
             typeText(message);
 
             setTimeout(() => {
-                window.location.href = `/pokedex/${playerName}`; // Redireciona usando o nome do jogador
+                window.location.href = `/pokedex/${playerName}`;
             }, 9000);
         })
     .catch(error => {

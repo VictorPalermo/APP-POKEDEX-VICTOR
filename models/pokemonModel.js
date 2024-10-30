@@ -1,25 +1,31 @@
-const pokemons = [
-    { id: 1, nome: 'Bulbassauro', tipo: 'Vegetal/Veneno' },
-    { id: 2, nome: 'Squirtle', tipo: 'Água' },
-    { id: 3, nome: 'Charmander', tipo: 'Fogo' },
-];
+const { getTreinadorPorNome } = require('../models/treinadorModel');
 
-const getPokemons = () => pokemons;
-const getPokemonById = (id) => pokemons.find(p => p.id === parseInt(id));
+const pokemons = [];
 
-const createPokemon = ({ nome, tipo1, tipo2, genero, peso, altura, level }) => {
-    const id = pokemons.length + 1;
-    const novoPokemon = {
-        id,
-        nome,
-        tipo: tipo2 ? `${tipo1}/${tipo2}` : tipo1,
-        genero,
-        peso,
-        altura,
-        level
-    };
-    pokemons.push(novoPokemon);
-    return novoPokemon;
-};
+class Pokemon {
+    constructor(nome, tipo1, tipo2, generop, peso, altura, level) {
+        this.nome = nome;
+        this.tipo1 = tipo1;
+        this.tipo2 = tipo2;
+        this.generop = generop;
+        this.peso = peso;
+        this.altura = altura;
+        this.level = level;
+    }
+}
 
-module.exports = { getPokemons, getPokemonById, createPokemon };
+function getPokemonsPorTreinador(treinadorNome) {
+    return pokemons.filter(pokemon => pokemon.treinadorNome === treinadorNome);
+}
+
+function adicionarPokemon(treinadorNome, pokemon) {
+    const treinador = getTreinadorPorNome(treinadorNome); 
+    if (treinador) {
+        if (!treinador.pokemons) { 
+            treinador.pokemons = [];
+        }
+        treinador.pokemons.push(pokemon);
+    }
+}
+
+module.exports = { Pokemon, getPokemonsPorTreinador, adicionarPokemon, pokemons };

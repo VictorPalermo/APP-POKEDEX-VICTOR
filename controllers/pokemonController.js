@@ -1,32 +1,14 @@
-const pokemonModel = require('../models/pokemonModel');
-
-const getAllPokemons = (req, res) => {
-    const pokemons = pokemonModel.getPokemons();
-    res.render('pokedex', { pokemons });
-};
-
-const getPokemon = (req, res) => {
-    const pokemon = pokemonModel.getPokemonById(req.params.id);
-    if (pokemon) {
-        res.render('pokemon', { pokemon });
-    } else {
-        res.status(404).send('Pokémon não encontrado');
-    }
-};
+const { Pokemon, adicionarPokemon } = require('../models/pokemonModel');
+const treinadorModel = require('../models/treinadorModel');
 
 
-const createPokemon = (req, res) => {
+exports.criarPokemon = (req, res) => {
     const { nome, tipo1, tipo2, generop, peso, altura, level } = req.body;
-    const novoPokemon = pokemonModel.createPokemon({
-        nome,
-        tipo1,
-        tipo2,
-        genero: generop,
-        peso,
-        altura,
-        level
-    });
-    res.redirect('/');
-};
+    const treinadorNome = req.params.nome; 
 
-module.exports = { getAllPokemons, getPokemon, createPokemon };
+    const novoPokemon = new Pokemon(nome, tipo1, tipo2, generop, peso, altura, level);
+    console.log(`Pokemon criado: Nome - ${nome}, Tipo - ${tipo1}, Segundo tipo - ${tipo2}, Gênero - ${generop}, Peso - ${peso}, Altura - ${altura}, Level ${level}`);
+    adicionarPokemon(treinadorNome, novoPokemon); 
+
+    res.redirect(`/pokedex/${treinadorNome}`); 
+};

@@ -8,18 +8,17 @@ class Treinador {
     constructor(nome, genero) {
         this.nome = nome;
         this.genero = genero;
+        this.pokemons = [];
     }
 }
 
 let treinadorAtual = null;
 const treinadores = [];
 
-// Recupera o treinador atual
 const getTreinadorAtual = () => {
     return treinadorAtual;
 };
 
-// Adiciona um novo treinador sem ID
 const addTreinador = (nome, genero) => {
     const novoTreinador = new Treinador(nome, genero);
     treinadores.push(novoTreinador);
@@ -27,12 +26,10 @@ const addTreinador = (nome, genero) => {
     return novoTreinador;
 };
 
-// Recupera todos os treinadores
 const getTreinadores = () => {
     return treinadores;
 };
 
-// Recupera um treinador específico pelo nome
 const getTreinadorPorNome = (nome) => {
     return treinadores.find(t => t.nome === nome);
 };
