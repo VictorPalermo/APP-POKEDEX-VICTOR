@@ -63,7 +63,7 @@
         ];
 
         let currentIndex = 0;
-        let gender; // Variável para armazenar o gênero
+        let gender; 
 
         function nextText() {
             if (currentIndex < texts.length) {
@@ -72,7 +72,7 @@
             }
 
             if (currentIndex === texts.length) {
-                document.getElementById("genero").style.display = 'block'; // Mostra opções de gênero
+                document.getElementById("genero").style.display = 'block'; 
             }
         }
 
@@ -93,47 +93,43 @@
         }
 
         function chooseCharacter(selectedGender) {
-            gender = selectedGender; // Armazena o gênero selecionado
+            gender = selectedGender; 
             let genderText = (gender === 'garoto') ? "EntãoﾠvocêﾠéﾠumﾠGaroto!" : "EntãoﾠvocêﾠéﾠumaﾠGarota!";
             typeText(genderText);
             
-            // Aguarda 2 segundos para ocultar os botões
+            
             setTimeout(() => {
-                document.getElementById("genero").style.display = 'none'; // Esconde os botões de escolha de gênero
+                document.getElementById("genero").style.display = 'none'; 
 
-                // Define a imagem do personagem com base no gênero
+        
                 const characterImg = document.getElementById('character-img');
                 characterImg.src = (gender === 'garoto') ? '/images/garoto.png' : '/images/garota.png'; 
-                characterImg.style.display = 'block'; // Mostra a imagem do personagem
-                characterImg.style.margin = '0 auto'; // Centraliza a imagem
+                characterImg.style.display = 'block'; 
+                characterImg.style.margin = '0 auto'; 
 
-                // Esconde a imagem do professor
                 document.getElementById("professor-img").style.display = 'none';
 
-                // Pergunta o nome do jogador
                 typeText("Gostariaﾠdeﾠsaberﾠseuﾠnomeﾠagora.");
-                document.getElementById("name-input").style.display = 'block'; // Exibe o campo para nome
+                document.getElementById("name-input").style.display = 'block'; 
 
-                // A partir desse momento, vamos desativar a função de clique na caixa de texto
-                document.getElementById("text-box").onclick = null; // Remove o evento de clique
+                document.getElementById("text-box").onclick = null; 
             }, 2000); 
         }
         fetch('/api/treinadores')
     .then(response => response.json())
     .then(data => {
-        console.log("Lista de treinadores:", data); // Veja os treinadores no console
+        console.log("Lista de treinadores:", data); 
     })
     .catch(error => {
         console.error("Erro ao buscar treinadores:", error);
     });
 
-        function submitName() {
+    function submitName() {
     const playerName = document.getElementById("player-name").value;
     if (playerName) {
         sessionStorage.setItem('nome', playerName);
         sessionStorage.setItem('genero', gender);
 
-        // Enviar dados do treinador para o servidor
         fetch('/api/treinador', {
             method: 'POST',
             headers: {
@@ -144,28 +140,22 @@
                 genero: gender,
             }),
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao criar treinador');
-            }
-            return response.json();
-        })
+      
         .then(data => {
-            // Exibir mensagem de sucesso e redirecionar
             console.log(data.message);
             const gameText = document.getElementById('game-text');
             const message = `SuaﾠprópriaﾠlendaﾠPokémonﾠestáﾠprestesﾠaﾠcomeçar!ﾠUmﾠmundoﾠdeﾠsonhosﾠeﾠaventurasﾠlheﾠaguardaﾠ${playerName}.ﾠVamosﾠlá!`;
             typeText(message);
 
             setTimeout(() => {
-                window.location.href = '/pokedex';
+                window.location.href = `/pokedex/${playerName}`; // Redireciona usando o nome do jogador
             }, 9000);
         })
-        .catch(error => {
-            alert(error.message);
-        });
+    .catch(error => {
+    alert(error.message);
+    });
     } else {
-        alert("Por favor, digite um nome!");
+    alert("Por favor, digite um nome!");
     }
 }
 

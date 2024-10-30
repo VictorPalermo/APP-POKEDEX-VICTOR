@@ -8,13 +8,7 @@
     <div class="pokedex-container">
         <div class="pokedex-screen">
             <h1> Pokédex de <%= pokedex.treinadorNome %></h1>
-             <ul class="pokemon-list">
-        <% pokemons.forEach(function(pokemon) { %>
-            <li>
-                <a href="/pokemon/<%= pokemon.id %>"><%= pokemon.nome %></a> - <%= pokemon.tipo %>
-            </li>
-        <% }); %>
-    </ul>  
+
 </div>
 <div class="pokedex-form">
     <h2>Criar novo Pokémon</h2>
@@ -93,7 +87,11 @@
 </div>
 <div class="treinadores">
     <h2>Treinadores:</h2>
-
+    <ul>
+        <% treinadores.forEach(function(t) { %> 
+            <li><a href="/pokedex/<%= t.nome %>"><%= t.nome %></a> - <%= t.genero %></li>
+        <% }); %>
+    </ul>
     <button onclick="window.location.href='/'">Criar um novo Treinador</button>
 </div>
 </body>

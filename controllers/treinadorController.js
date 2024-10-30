@@ -1,20 +1,31 @@
-const { addTreinador, getTreinadores } = require('../models/treinadorModel');
+const { addTreinador, getTreinadores, getTreinadorPorNome } = require('../models/treinadorModel');
 
 // Função para adicionar um novo treinador
 const criarTreinador = (req, res) => {
     const { nome, genero } = req.body; // Assume que os dados vêm do corpo da requisição
-    addTreinador(nome, genero);
+    const novoTreinador = addTreinador(nome, genero);
+    
     console.log(`Treinador criado: Nome - ${nome}, Gênero - ${genero}`);
-    res.status(201).json({ message: 'Treinador criado com sucesso!'});
-    res.redirect('/pokedex'); // ajuste a rota conforme sua configuração
-
+    // Redireciona para a página da Pokédex do treinador criado
+    res.redirect(`/pokedex/${novoTreinador.nome}`);
 };
 
 // Função para obter todos os treinadores
 const listarTreinadores = (req, res) => {
-    
     const treinadores = getTreinadores();
     res.status(200).json(treinadores);
 };
 
-module.exports = { criarTreinador, listarTreinadores };
+// Função para selecionar treinador pelo nome
+const selecionarTreinador = (req, res) => {
+    const nome = req.params.nome;
+    const treinador = getTreinadorPorNome(nome);
+    if (treinador) {
+        treinadorAtual = treinador; // Define o treinador atual
+        res.redirect(`/pokedex/${treinador.nome}`);
+    } else {
+        res.status(404).send('Treinador não encontrado');
+    }
+};
+
+module.exports = { criarTreinador, listarTreinadores, selecionarTreinador };

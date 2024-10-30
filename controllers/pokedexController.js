@@ -1,14 +1,15 @@
 // pokedexController.js
 const Pokedex = require('../models/pokedexModel');
-const treinadorModel = require('../models/treinadorModel'); // Importa o treinador temporário
+const treinadorModel = require('../models/treinadorModel');
 
 exports.exibirPokedex = (req, res) => {
-  const treinador = treinadorModel.getTreinadorAtual(); // Obtenha o treinador atual (deve ser salvo temporariamente)
+  const treinadorNome = req.params.nome; // Altere de id para nome
+  const treinador = treinadorModel.getTreinadores().find(t => t.nome === treinadorNome); // Buscando pelo nome
   
   if (treinador) {
-    const pokedex = new Pokedex(treinador); // Cria uma instância da Pokédex com os dados do treinador
+    const pokedex = new Pokedex(treinador);
     const treinadores = treinadorModel.getTreinadores();
-    res.render('pokedex', { pokedex }); // Passa a pokedex para a view
+    res.render('pokedex', { pokedex, treinadores });
   } else {
     res.status(404).send('Treinador não encontrado');
   }
