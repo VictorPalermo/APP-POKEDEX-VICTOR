@@ -11,6 +11,7 @@ class Pokemon {
         this.peso = peso;
         this.altura = altura;
         this.level = level;
+        this.treinadorNome = treinadorNome;
     }
 }
 
@@ -19,13 +20,16 @@ function getPokemonsPorTreinador(treinadorNome) {
 }
 
 function adicionarPokemon(treinadorNome, pokemon) {
-    const treinador = getTreinadorPorNome(treinadorNome); 
+    const treinador = getTreinadorPorNome(treinadorNome);
     if (treinador) {
-        if (!treinador.pokemons) { 
-            treinador.pokemons = [];
-        }
-        treinador.pokemons.push(pokemon);
+        pokemon.treinadorNome = treinadorNome;
+        pokemons.push(pokemon); 
+        treinador.pokemons = treinador.pokemons || []; 
+        treinador.pokemons.push(pokemon); 
     }
 }
+
+
+
 
 module.exports = { Pokemon, getPokemonsPorTreinador, adicionarPokemon, pokemons };

@@ -16,7 +16,7 @@
 </div>
 <div class="pokedex-form">
     <h2>Criar novo Pokémon</h2>
-    <form action="/pokedex/<%= pokedex.treinadorNome %>" method="POST">
+    <form id="pokemonForm" action="/pokedex/<%= pokedex.treinadorNome %>" method="POST">
         <label for="nome">Nome do Pokémon:</label>
         <input type="text" id="nome" name="nome" required>
 
@@ -190,4 +190,28 @@ button:hover {
 
 
 </style>
+
+<script>
+    document.getElementById('pokemonForm').addEventListener('submit', function(event) {
+        event.preventDefault();  // Impede o envio imediato do formulário para fins de teste
+
+        // Captura os valores dos campos do formulário
+        const nome = document.getElementById('nome').value;
+        const tipo1 = document.getElementById('tipo1').value;
+        const tipo2 = document.getElementById('tipo2').value;
+        const generop = document.getElementById('generop').value;
+        const peso = document.getElementById('peso').value;
+        const altura = document.getElementById('altura').value;
+        const level = document.getElementById('level').value;
+
+        // Exibe os dados capturados no console do navegador
+        console.log("Dados do Pokémon a serem enviados:");
+        console.log({ nome, tipo1, tipo2, generop, peso, altura, level });
+
+        // Depois de verificar, descomente a linha abaixo para permitir o envio do formulário
+        event.target.submit();
+    });
+</script>
+
+
 </html>
